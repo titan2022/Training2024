@@ -11,7 +11,7 @@ public class WPI_TalonFX {
 
     public int id;
 
-    public enum ControlMode {
+    public static enum ControlMode {
         PercentOutput
     }
 
