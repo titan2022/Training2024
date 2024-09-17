@@ -10,7 +10,6 @@ public class WPI_TalonFX {
     private int multiplier = 1;
 
     public int id;
-    private TimedRobot robot;
 
     public enum ControlMode {
         PercentOutput
@@ -24,9 +23,8 @@ public class WPI_TalonFX {
     /*
      * 
      */
-    public WPI_TalonFX(int id, TimedRobot robot) {
+    public WPI_TalonFX(int id) {
         this.id = id;
-        this.robot = robot;
     }
 
     /*
@@ -40,20 +38,20 @@ public class WPI_TalonFX {
 
         switch (id) {
             case 0:
-                robot.window.acc_buffer.add(new GVector(0, output * multiplier));
-                robot.window.rot_acc_buffer += output * 0.7 * multiplier;
+                TimedRobot.window.acc_buffer.add(new GVector(0, output * multiplier));
+                TimedRobot.window.rot_acc_buffer += output * 0.7 * multiplier;
                 break;
             case 1:
-                robot.window.acc_buffer.add(new GVector(0, output * multiplier));
-                robot.window.rot_acc_buffer += output * 0.7 * multiplier;
+                TimedRobot.window.acc_buffer.add(new GVector(0, output * multiplier));
+                TimedRobot.window.rot_acc_buffer += output * 0.7 * multiplier;
                 break;
             case 2:
-                robot.window.acc_buffer.add(new GVector(0, output * multiplier));
-                robot.window.rot_acc_buffer += -output * 0.7 * multiplier;
+                TimedRobot.window.acc_buffer.add(new GVector(0, output * multiplier));
+                TimedRobot.window.rot_acc_buffer += -output * 0.7 * multiplier;
                 break;
             case 3:
-                robot.window.acc_buffer.add(new GVector(0, output * multiplier));
-                robot.window.rot_acc_buffer += -output * 0.7 * multiplier;
+                TimedRobot.window.acc_buffer.add(new GVector(0, output * multiplier));
+                TimedRobot.window.rot_acc_buffer += -output * 0.7 * multiplier;
                 break;
             default:
                 break;
@@ -67,7 +65,7 @@ public class WPI_TalonFX {
         if (mode == NeutralMode.Brake) {
 
         } else {
-            
+
         }
     }
 
