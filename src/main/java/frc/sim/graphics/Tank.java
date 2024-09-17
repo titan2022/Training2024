@@ -13,6 +13,7 @@ import java.util.TimerTask;
 import javax.swing.*;
 
 import frc.sim.CommandBase;
+import frc.sim.SubsystemBase;
 import frc.sim.TimedRobot;
 import frc.sim.util.GVector;
 
@@ -39,6 +40,7 @@ public class Tank extends JPanel implements KeyListener {
 
     public boolean auton = false;
     public ArrayList<CommandBase> cmds = new ArrayList<CommandBase>();
+    public ArrayList<SubsystemBase> subsystems = new ArrayList<SubsystemBase>();
     
     @Override
     protected void paintComponent(Graphics g) {
@@ -117,8 +119,13 @@ public class Tank extends JPanel implements KeyListener {
                         if (xbox.releasedX) {
                             xbox.releasedX = false;
                         }
-
+                        
                         robot.robotPeriodic();
+
+                        for (SubsystemBase subsystem : subsystems) {
+                            subsystem.periodic();
+                        }
+                        
                         if (!auton) {
                             robot.teleopPeriodic();
                         } else {
