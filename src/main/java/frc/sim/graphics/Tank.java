@@ -1,5 +1,18 @@
 /*
  * IGNORE THIS FILE
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
  */
 package frc.sim.graphics;
 
@@ -8,17 +21,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.io.File;
 import java.util.TimerTask;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+
+import java.util.ArrayList;
+import java.util.Timer;
 
 import frc.sim.CommandBase;
 import frc.sim.SubsystemBase;
 import frc.sim.TimedRobot;
 import frc.sim.util.GVector;
-
-import java.util.ArrayList;
-import java.util.Timer;
 
 public class Tank extends JPanel implements KeyListener {
     private final double friction = 0.9;
@@ -32,16 +47,18 @@ public class Tank extends JPanel implements KeyListener {
 
     public GVector acc = new GVector(0, 0);
     public GVector vel = new GVector(0, 0);
-    public GVector pos = new GVector(400, 300);
+    public GVector pos = new GVector(100, 450);
 
     public double rot_acc = 0;
     public double rot_vel = 0;
-    public double rot_pos = 45;
+    public double rot_pos = 270;
 
     public boolean auton = false;
     public ArrayList<CommandBase> cmds = new ArrayList<CommandBase>();
     public ArrayList<SubsystemBase> subsystems = new ArrayList<SubsystemBase>();
-    
+
+    public ArrayList<ArrayList<CommandBase>> cmdSeqs = new ArrayList<ArrayList<CommandBase>>();
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -103,7 +120,7 @@ public class Tank extends JPanel implements KeyListener {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-               createAndShowGui();
+                createAndShowGui();
             }
         });
 
@@ -119,13 +136,13 @@ public class Tank extends JPanel implements KeyListener {
                         if (xbox.releasedX) {
                             xbox.releasedX = false;
                         }
-                        
+
                         robot.robotPeriodic();
 
                         for (SubsystemBase subsystem : subsystems) {
                             subsystem.periodic();
                         }
-                        
+
                         if (!auton) {
                             robot.teleopPeriodic();
                         } else {
@@ -146,10 +163,40 @@ public class Tank extends JPanel implements KeyListener {
                                     cmd.firstFinish = false;
                                 }
                             }
+
+                            if ((cmd.timeLimit > -0.5 && System.currentTimeMillis() - cmd.startTime > cmd.timeLimit)) {
+                                if (cmd.firstFinish) {
+                                    cmd.end(false);
+                                    cmd.firstFinish = false;
+                                }
+                            }
+                        }
+
+                        for (int i = 0; i < cmdSeqs.size(); i++) {
+                            ArrayList<CommandBase> cmdSeq = cmdSeqs.get(i);
+
+                            if (cmdSeq.size() > 0) {
+                                CommandBase cmd = cmdSeq.get(0);
+                                if (cmd.firstRun) {
+                                    cmd.initialize();
+                                    cmd.firstRun = false;
+                                }
+
+                                if (!cmd.isFinished()) {
+                                    cmd.execute();
+                                } else {
+                                    if (cmd.firstFinish) {
+                                        cmd.end(false);
+                                        cmd.firstFinish = false;
+
+                                        cmdSeq.remove(0);
+                                        cmdSeqs.set(i, cmdSeq);
+                                    }
+                                }
+                            }
                         }
                     }
 
-                    
                 }
             }
         }, 0, 20);

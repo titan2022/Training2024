@@ -46,7 +46,7 @@ public class TimedRobot {
  
      /** This function is called once during operator control. */
      public void teleopInit() {
- 
+        
      }
  
      /** This function is called periodically during operator control. */
@@ -60,6 +60,7 @@ public class TimedRobot {
      }
  
      public final void start(boolean isTeleop) {
+        window.auton = !isTeleop;
          this.robotInit();
  
          if (isTeleop) {

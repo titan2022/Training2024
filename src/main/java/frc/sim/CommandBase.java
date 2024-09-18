@@ -8,6 +8,9 @@ public abstract class CommandBase {
     public boolean firstRun = true;
     public boolean firstFinish = true;
 
+    public long startTime = 0;
+    public long timeLimit = -1;
+
     public void addRequirements(SubsystemBase... subsystems) {
 
     }
@@ -16,9 +19,7 @@ public abstract class CommandBase {
      * The initial subroutine of a command. Called once when the command is
      * initially scheduled.
      */
-    public void initialize() {
-
-    }
+    public abstract void initialize();
 
     /**
      * The main body of a command. Called repeatedly while the command is scheduled.
@@ -54,7 +55,13 @@ public abstract class CommandBase {
         return false;
     }
 
+    public final CommandBase withTimeout(double time) {
+        timeLimit = (long)(time * 1000.0);
+        return this;
+    }
+
     public final CommandBase schedule() {
+        startTime = System.currentTimeMillis();
         TimedRobot.window.cmds.add(this);
         return this;
     }
