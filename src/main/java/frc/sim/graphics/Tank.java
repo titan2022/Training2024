@@ -155,7 +155,7 @@ public class Tank extends JPanel implements KeyListener {
                                 cmd.firstRun = false;
                             }
 
-                            if (!cmd.isFinished()) {
+                            if (!cmd.isFinished() && cmd.firstFinish) {
                                 cmd.execute();
                             } else {
                                 if (cmd.firstFinish) {
@@ -164,7 +164,7 @@ public class Tank extends JPanel implements KeyListener {
                                 }
                             }
 
-                            if ((cmd.timeLimit > -0.5 && System.currentTimeMillis() - cmd.startTime > cmd.timeLimit)) {
+                            if ((cmd.timeLimit > 0 && System.currentTimeMillis() - cmd.startTime > cmd.timeLimit)) {
                                 if (cmd.firstFinish) {
                                     cmd.end(false);
                                     cmd.firstFinish = false;
