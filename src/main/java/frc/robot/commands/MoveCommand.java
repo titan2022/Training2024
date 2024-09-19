@@ -2,27 +2,26 @@ package frc.robot.commands;
 
 import frc.robot.subsystems.TankDriveSubsystem;
 import frc.sim.CommandBase;
-import frc.sim.graphics.XboxController;
 
-public class TankControlCommand extends CommandBase {
+public class MoveCommand extends CommandBase {
     private TankDriveSubsystem drive;
-    private XboxController xbox;
+    private double percentOutput;
 
-    public TankControlCommand(TankDriveSubsystem drive, XboxController xbox) {
+    public MoveCommand(TankDriveSubsystem drive, double percentOutput) {
         this.drive = drive;
-        this.xbox = xbox;
+        this.percentOutput = percentOutput;
         addRequirements(drive);
-    }
+    } 
 
     @Override
     public void initialize() {
-
+        drive.driveLeft(percentOutput);
+        drive.driveRight(percentOutput);
     }
 
     @Override
     public void execute() {
-        drive.driveLeft(xbox.getLeftY());
-        drive.driveRight(xbox.getRightY());
+
     }
 
     @Override

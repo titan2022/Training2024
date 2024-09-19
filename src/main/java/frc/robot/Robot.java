@@ -1,5 +1,8 @@
 package frc.robot;
 
+import frc.robot.commands.MoveCommand;
+import frc.robot.commands.TankControlCommand;
+import frc.robot.subsystems.TankDriveSubsystem;
 import frc.sim.CommandScheduler;
 import frc.sim.TimedRobot;
 
@@ -11,6 +14,7 @@ public class Robot extends TimedRobot {
      * Don't uncomment unless you are using it for actual deployment
      */
     //private XboxController xbox = new XboxController(0);
+    private TankDriveSubsystem drive = new TankDriveSubsystem();
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -41,7 +45,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        
+        new MoveCommand(drive, 0.5).withTimeout(2.0).schedule();
     }
 
     /** This function is called periodically during autonomous. */
@@ -56,7 +60,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopInit() {
-        
+        new TankControlCommand(drive, xbox).schedule();
     }
 
     /** This function is called periodically during operator control. */

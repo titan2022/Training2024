@@ -44,6 +44,7 @@ public class Tank extends JPanel implements KeyListener {
 
     public GVector acc_buffer = new GVector(0, 0);
     public double rot_acc_buffer = 0;
+    public double rot_jerk_buffer = 0;
 
     public GVector acc = new GVector(0, 0);
     public GVector vel = new GVector(0, 0);
@@ -56,6 +57,7 @@ public class Tank extends JPanel implements KeyListener {
     public boolean auton = false;
     public ArrayList<CommandBase> cmds = new ArrayList<CommandBase>();
     public ArrayList<SubsystemBase> subsystems = new ArrayList<SubsystemBase>();
+    public ArrayList<WPI_TalonFX> motors = new ArrayList<WPI_TalonFX>();
 
     public ArrayList<ArrayList<CommandBase>> cmdSeqs = new ArrayList<ArrayList<CommandBase>>();
 
@@ -129,6 +131,10 @@ public class Tank extends JPanel implements KeyListener {
         timer.schedule(new TimerTask() {
             public void run() {
                 if (frame != null) {
+                    for (WPI_TalonFX motor : motors) {
+                        motor.update();
+                    } 
+
                     calcPhysics();
                     frame.repaint();
 

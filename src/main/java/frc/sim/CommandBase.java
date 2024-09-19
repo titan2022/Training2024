@@ -19,7 +19,9 @@ public abstract class CommandBase {
      * The initial subroutine of a command. Called once when the command is
      * initially scheduled.
      */
-    public abstract void initialize();
+    public void initialize() {
+        
+    }
 
     /**
      * The main body of a command. Called repeatedly while the command is scheduled.

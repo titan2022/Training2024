@@ -11,6 +11,9 @@ public class WPI_TalonFX {
 
     public int id;
 
+    private ControlMode mode = ControlMode.PercentOutput;
+    private double value = 0;
+
     public static enum ControlMode {
         PercentOutput
     }
@@ -25,12 +28,21 @@ public class WPI_TalonFX {
      */
     public WPI_TalonFX(int id) {
         this.id = id;
+
+        TimedRobot.window.motors.add(this);
     }
 
     /*
      * 
      */
     public void set(ControlMode mode, double value) {
+        this.mode = mode;
+        this.value = value;
+
+        update();
+    }
+
+    public void update() {
         double output = 0;
         if (mode == ControlMode.PercentOutput) {
             output = value * 250;
@@ -40,18 +52,22 @@ public class WPI_TalonFX {
             case 0:
                 TimedRobot.window.acc_buffer.add(new GVector(0, output * multiplier));
                 TimedRobot.window.rot_acc_buffer += output * 0.7 * multiplier;
+                // TimedRobot.window.rot_jerk_buffer += output * 0.7 * multiplier;
                 break;
             case 1:
                 TimedRobot.window.acc_buffer.add(new GVector(0, output * multiplier));
                 TimedRobot.window.rot_acc_buffer += output * 0.7 * multiplier;
+                // TimedRobot.window.rot_jerk_buffer += output * 0.7 * multiplier;
                 break;
             case 2:
                 TimedRobot.window.acc_buffer.add(new GVector(0, output * multiplier));
                 TimedRobot.window.rot_acc_buffer += -output * 0.7 * multiplier;
+                // TimedRobot.window.rot_jerk_buffer += -output * 0.7 * multiplier;
                 break;
             case 3:
                 TimedRobot.window.acc_buffer.add(new GVector(0, output * multiplier));
                 TimedRobot.window.rot_acc_buffer += -output * 0.7 * multiplier;
+                // TimedRobot.window.rot_jerk_buffer += -output * 0.7 * multiplier;
                 break;
             default:
                 break;
