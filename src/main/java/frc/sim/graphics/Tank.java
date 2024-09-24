@@ -184,11 +184,12 @@ public class Tank extends JPanel implements KeyListener {
                             if (cmdSeq.size() > 0) {
                                 CommandBase cmd = cmdSeq.get(0);
                                 if (cmd.firstRun) {
+                                    cmd.startTime = System.currentTimeMillis();
                                     cmd.initialize();
                                     cmd.firstRun = false;
                                 }
 
-                                if (!cmd.isFinished()) {
+                                if (!cmd.isFinished() && cmd.firstFinish) {
                                     cmd.execute();
                                 } else {
                                     if (cmd.firstFinish) {
@@ -197,6 +198,15 @@ public class Tank extends JPanel implements KeyListener {
 
                                         cmdSeq.remove(0);
                                         cmdSeqs.set(i, cmdSeq);
+                                        
+                                        cmd.firstRun = true;
+                                    }
+                                }
+
+                                if ((cmd.timeLimit > 0 && System.currentTimeMillis() - cmd.startTime > cmd.timeLimit)) {
+                                    if (cmd.firstFinish) {
+                                        cmd.end(false);
+                                        cmd.firstFinish = false;
                                     }
                                 }
                             }

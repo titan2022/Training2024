@@ -4,6 +4,7 @@ import frc.robot.commands.MoveCommand;
 import frc.robot.commands.TankControlCommand;
 import frc.robot.subsystems.TankDriveSubsystem;
 import frc.sim.CommandScheduler;
+import frc.sim.SequentialCommandGroup;
 import frc.sim.TimedRobot;
 
 public class Robot extends TimedRobot {
@@ -45,7 +46,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        new MoveCommand(drive, 0.5).withTimeout(2.0).schedule();
+        
     }
 
     /** This function is called periodically during autonomous. */
