@@ -4,6 +4,10 @@ import frc.robot.subsystems.TankDriveSubsystem;
 import frc.sim.CommandBase;
 import frc.sim.graphics.XboxController;
 
+/**
+ * Basic xbox control teleop command. Uses left joystick to control left side,
+ * right joystick for right side. Y-axis only.
+ */
 public class TankControlCommand extends CommandBase {
     private TankDriveSubsystem drive;
     private XboxController xbox;
