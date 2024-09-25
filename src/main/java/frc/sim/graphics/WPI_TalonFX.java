@@ -7,7 +7,7 @@ import frc.sim.TimedRobot;
 import frc.sim.util.GVector;
 
 public class WPI_TalonFX {
-    private int multiplier = 1;
+    private double multiplier = 0.5;
 
     public int id;
 
@@ -90,9 +90,9 @@ public class WPI_TalonFX {
      */
     public void setInverted(boolean isInverted) {
         if (isInverted) {
-            multiplier = -1;
+            multiplier = -Math.abs(multiplier);
         } else {
-            multiplier = 1;
+            multiplier = Math.abs(multiplier);
         }
     }
 }

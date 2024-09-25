@@ -46,7 +46,13 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        
+        // Seq command group example
+        // runs for 0.5s, stops for 1.5s, runs again for 1.5s
+        new SequentialCommandGroup(
+            new MoveCommand(drive, 1.0).withTimeout(0.5),
+            new MoveCommand(drive, 0.0).withTimeout(1.5),
+            new MoveCommand(drive, 0.5).withTimeout(1.5)
+        ).schedule();
     }
 
     /** This function is called periodically during autonomous. */

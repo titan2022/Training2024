@@ -97,19 +97,23 @@ public class Tank extends JPanel implements KeyListener {
         frame.addKeyListener(this);
     }
 
+    private long prevTime = System.nanoTime();
     private void calcPhysics() {
+        double dt = (double)(System.nanoTime() - prevTime) / 1000000000.0;//0.02;
+        prevTime = System.nanoTime();
+
         acc = acc_buffer.copy();
         rot_acc = rot_acc_buffer;
         acc_buffer.set(0, 0);
         rot_acc_buffer = 0;
 
-        vel.add(acc.timesI(0.02));
-        pos.add(vel.rotateI(rot_pos).timesI(0.02));
+        vel.add(acc.timesI(dt));
+        pos.add(vel.rotateI(rot_pos).timesI(dt));
         acc.times(friction);
         vel.times(friction);
 
-        rot_vel += rot_acc * 0.02;
-        rot_pos += rot_vel * 0.02;
+        rot_vel += rot_acc * dt;
+        rot_pos += rot_vel * dt;
         rot_acc *= friction;
         rot_vel *= friction;
 
@@ -128,6 +132,7 @@ public class Tank extends JPanel implements KeyListener {
 
         Timer timer = new Timer();
 
+        prevTime = System.nanoTime();
         timer.schedule(new TimerTask() {
             public void run() {
                 if (frame != null) {
@@ -200,6 +205,9 @@ public class Tank extends JPanel implements KeyListener {
                                         cmdSeqs.set(i, cmdSeq);
                                         
                                         cmd.firstRun = true;
+                                        if (cmdSeq.size() > 0) {
+                                            cmdSeq.get(0).startTime = System.currentTimeMillis();
+                                        }
                                     }
                                 }
 
@@ -207,6 +215,14 @@ public class Tank extends JPanel implements KeyListener {
                                     if (cmd.firstFinish) {
                                         cmd.end(false);
                                         cmd.firstFinish = false;
+
+                                        cmdSeq.remove(0);
+                                        cmdSeqs.set(i, cmdSeq);
+                                        
+                                        cmd.firstRun = true;
+                                        if (cmdSeq.size() > 0) {
+                                            cmdSeq.get(0).startTime = System.currentTimeMillis();
+                                        }
                                     }
                                 }
                             }
