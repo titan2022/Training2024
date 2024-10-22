@@ -75,7 +75,7 @@ public class SimWindow extends JPanel implements KeyListener {
         keyInput.setY(-rawInput[2] + rawInput[3]);
         stick.setTargetAngle(Math.atan2(keyInput.y, keyInput.x));
 
-        stick.setAcceleration((2 * gravity) / (3));
+        stick.setAcceleration(0);
         stick.addVelocity(stick.getAcceleration() * dt);
         stick.addCurrentAngle(stick.getVelocity() * dt);
     }
