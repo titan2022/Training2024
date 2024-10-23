@@ -20,7 +20,7 @@ public class SimWindow extends JPanel implements KeyListener {
     private static double MAX_ACCELERATION = 50;
 
     private JFrame frame;
-    private Elevator elevator = new Elevator();
+    public Elevator elevator = new Elevator();
 
     private double gravity = -9.8;
     private double dt = 0.02;
@@ -65,7 +65,7 @@ public class SimWindow extends JPanel implements KeyListener {
 
     // very messy
     private long prevTime = System.nanoTime();
-    private void calcPhysics() {
+    public void calculatePhysics() {
         dt = TIME_MULT * (double)(System.nanoTime() - prevTime) / 1000000000.0;//0.02;
         PIDController.m_period = dt;
         prevTime = System.nanoTime();
@@ -173,24 +173,28 @@ public class SimWindow extends JPanel implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {}
 
-    public SimWindow(PlaygroundBase playground) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGui();
-            }
-        });
-
-        Timer timer = new Timer();
-
-        playground.start(elevator);
-        timer.schedule(new TimerTask() {
-            public void run() {
-                if (frame != null) {
-                    playground.update(elevator);
-                    calcPhysics();
-                    frame.repaint();
+    public SimWindow(PlaygroundBase playground, boolean isAutomated) {
+        if (isAutomated) {
+            playground.start(elevator);
+        } else {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    createAndShowGui();
                 }
-            }
-        }, 0, 20);
+            });
+    
+            Timer timer = new Timer();
+    
+            playground.start(elevator);
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    if (frame != null) {
+                        playground.update(elevator);
+                        calculatePhysics();
+                        frame.repaint();
+                    }
+                }
+            }, 0, 20);
+        }
     }
 }
