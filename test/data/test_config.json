@@ -1,0 +1,19 @@
+{
+    "cameras": [
+        {
+            "width": 640,
+            "height": 480,
+            "fps": 30,
+            "exposure": 0,
+            "focalX": 1,
+            "focalY": 1,
+            "centerX": 1,
+            "centerY": 1,
+            "k1": 1,
+            "k2": 1,
+            "p1": 1,
+            "p2": 1,
+            "k3": 1
+        }
+    ]
+}
